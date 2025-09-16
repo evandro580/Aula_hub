@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial Interativo Git e GitHub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Reset Global */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      text-decoration: none;
+    }
+
+    /* Estilos do Body */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: #e6e6e6;
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      color: #4cc9f0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: #a5b4cb;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .folder-container {
+      max-width: 1000px;
+      margin: 0 auto 30px;
+    }
+
+    .folder {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      margin-bottom: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      border-left: 5px solid #4361ee;
+    }
+
+    .folder-header {
+      padding: 18px 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(67, 97, 238, 0.1);
+      transition: background 0.3s ease;
+    }
+
+    .folder-header:hover {
+      background: rgba(67, 97, 238, 0.2);
+    }
+
+    .folder-title {
+      font-size: 1.5rem;
+      color: #4cc9f0;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .folder-icon {
+      font-size: 1.2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .folder-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+      background: rgba(10, 25, 47, 0.7);
+    }
+
+    .folder.active .folder-content {
+      max-height: 1000px;
+    }
+
+    .folder.active .folder-icon {
+      transform: rotate(90deg);
+    }
+
+    .content-inner {
+      padding: 20px;
+    }
+
+    p, ul, ol {
+      margin-bottom: 15px;
+      color: #cdd6f7;
+    }
+
+    strong {
+      color: #4cc9f0;
+    }
+
+    code {
+      background: rgba(76, 201, 240, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #4cc9f0;
+      font-family: 'Courier New', monospace;
+    }
+
+    pre {
+      background: rgba(15, 23, 42, 0.9);
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 15px 0;
+      border-left: 4px solid #4cc9f0;
+    }
+
+    pre code {
+      background: transparent;
+      color: #e6e6e6;
+      padding: 0;
+    }
+
+    ul, ol {
+      padding-left: 30px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    a {
+      color: #4cc9f0;
+      transition: color 0.2s;
+    }
+
+    a:hover {
+      color: #f72585;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      padding: 20px;
+      font-size: 1rem;
+      color: #a5b4cb;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .info-badge {
+      display: inline-block;
+      background: rgba(76, 201, 240, 0.2);
+      color: #4cc9f0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+
+    .tip {
+      background: rgba(76, 201, 240, 0.1);
+      border-left: 4px solid #4cc9f0;
+      padding: 10px 15px;
+      margin: 15px 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* Responsividade */
+    @media (max-width: 800px) {
+      body {
+        padding: 10px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .folder-title {
+        font-size: 1.3rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
+      
+      .info-badge {
+        display: block;
+        margin: 5px 0 0 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tutorial Interativo de Git e GitHub</h1>
+    <p class="subtitle">Clique nas pastas para expandir ou recolher o conteúdo</p>
+  </header>
+
+  <div class="folder-container">
+    <div class="folder">
+      <div class="folder-header">
+        <h2 class="folder-title"><i class="fas fa-code-branch"></i> O que é o Git</h2>
+        <span class="folder-icon">▶</span>
+      </div>
+      <div class="folder-content">
+        <div class="content-inner">
+          <p>O Git é um sistema de controle de versão distribuído, criado por Linus Torvalds em 2005. Ele permite que desenvolvedores acompanhem mudanças no código-fonte durante o desenvolvimento de software.</p>
+          <p><strong>Vantagens do Git:</strong></p>
+          <ul>
+            <li>Desenvolvimento não linear com branches</li>
+            <li>Funcionamento offline</li>
+            <li>Rápido e eficiente mesmo em projetos grandes</li>
+            <li>Histórico completo do projeto</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="folder">
+      <div class="folder-header">
+        <h2 class="folder-title"><i class="fab fa-github"></i> O que é o GitHub</h2>
+        <span class="folder-icon">▶</span>
+      </div>
+      <div class="folder-content">
+        <div class="content-inner">
+          <p>O GitHub é uma plataforma de hospedagem de código baseada na web que utiliza o Git para controle de versão. Foi adquirido pela Microsoft em 2018.</p>
+          <p><strong>Recursos principais:</strong></p>
+          <ul>
+            <li>Hospedagem de repositórios Git</li>
+            <li>Ferramentas de colaboração (issues, pull requests)</li>
+            <li>GitHub Pages para hospedagem de sites</li>
+            <li>Integração com CI/CD (GitHub Actions)</li>
+            <li>Controle de acesso e permissions</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="folder">
+      <div class="folder-header">
+        <h2 class="folder-title"><i class="fas fa-compare"></i> Diferenças entre Git e GitHub</h2>
+        <span class="folder-icon">▶</span>
+      </div>
+      <div class="folder-content">
+        <div class="content-inner">
+          <ul>
+            <li><strong>Git:</strong> Ferramenta de linha de comando para controle de versão local. Pode ser usado sem internet.</li>
+            <li><strong>GitHub:</strong> Serviço online que hospeda repositórios Git, adicionando funcionalidades sociais e colaborativas.</li>
+            <li>Git é software livre e gratuito; GitHub oferece planos gratuitos e pagos com recursos extras.</li>
+            <li>Git foca no versionamento; GitHub foca na colaboração e hospedagem.</li>
+            <li>Alternativas ao GitHub: GitLab, Bitbucket, SourceForge.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="folder">
+      <div class="folder-header">
+        <h2 class="folder-title"><i class="fas fa-terminal"></i> Comandos Linux no Git Bash</h2>
+        <span class="folder-icon">▶</span>
+      </div>
+      <div class="folder-content">
+        <div class="content-inner">
+          <p>O Git Bash é um emulador de terminal para Windows que permite usar comandos Unix. Comandos essenciais:</p>
+          <ul>
+            <li><code>ls</code>: Listar arquivos e diretórios <span class="info-badge">list</span></li>
+            <li><code>cd [diretório]</code>: Mudar de diretório <span class="info-badge">change directory</span></li>
+            <li><code>pwd</code>: Mostrar diretório atual <span class="info-badge">print working directory</span></li>
+            <li><code>mkdir [nome]</code>: Criar diretório <span class="info-badge">make directory</span></li>
+            <li><code>rm -r [nome]</code>: Remover diretório e conteúdo <span class="info-badge">remove recursive</span></li>
+            <li><code>mv [origem] [destino]</code>: Mover/renomear <span class="info-badge">move</span></li>
+            <li><code>cp [origem] [destino]</code>: Copiar arquivos <span class="info-badge">copy</span></li>
+            <li><code>touch [arquivo]</code>: Criar arquivo vazio</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="folder">
+      <div class="folder-header">
+        <h2 class="folder-title"><i class="fas fa-code"></i> Comandos Git Essenciais</h2>
+        <span class="folder-icon">▶</span>
+      </div>
+      <div class="folder-content">
+        <div class="content-inner">
+          <p>Comandos básicos para começar com Git:</p>
+          <ul>
+            <li><code>git init</code>: Inicializar repositório</li>
+            <li><code>git clone [url]</code>: Clonar repositório existente</li>
+            <li><code>git add [arquivo]</code>: Adicionar arquivo ao staging</li>
+            <li><code>git commit -m "mensagem"</code>: Criar commit</li>
+            <li><code>git status</code>: Verificar estado dos arquivos</li>
+            <li><code>git push</code>: Enviar commits para repositório remoto</li>
+            <li><code>git pull</code>: Atualizar repositório local</li>
+            <li><code>git branch</code>: Listar branches</li>
+          </ul>
+          <div class="tip">
+            <strong>Dica:</strong> Use <code>git status</code> frequentemente para verificar o estado do seu repositório.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="folder">
+      <div class="folder-header">
+        <h2 class="folder-title"><i class="fas fa-plus-circle"></i> Criar Repositório no GitHub</h2>
+        <span class="folder-icon">▶</span>
+      </div>
+      <div class="folder-content">
+        <div class="content-inner">
+          <ol>
+            <li>Acesse <a href="https://github.com">github.com</a> e faça login</li>
+            <li>Clique no botão "+" no canto superior direito → "New repository"</li>
+            <li>Preencha o nome do repositório (ex: meu-projeto)</li>
+            <li>Adicione uma descrição (opcional)</li>
+            <li>Escolha entre público (visível a todos) ou privado (apenas você)</li>
+            <li>Marque "Initialize with a README" para criar um arquivo README.md inicial</li>
+            <li>Clique em "Create repository"</li>
+          </ol>
+          <div class="tip">
+            <strong>Dica:</strong> O README.md é importante para documentar seu projeto! Inclua informações sobre o que o projeto faz, como instalá-lo e como usá-lo.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="folder">
+      <div class="folder-header">
+        <h2 class="folder-title"><i class="fas fa-link"></i> Conectar Projeto Local ao GitHub</h2>
+        <span class="folder-icon">▶</span>
+      </div>
+      <div class="folder-content">
+        <div class="content-inner">
+          <p>Para conectar um projeto existente a um repositório GitHub:</p>
+          <ol>
+            <li>No diretório do projeto: <code>git init</code></li>
+            <li>Adicione os arquivos: <code>git add .</code></li>
+            <li>Commit inicial: <code>git commit -m "Initial commit"</code></li>
+            <li>No GitHub, copie a URL do repositório (HTTPS ou SSH)</li>
+            <li>Adicione o remote: <code>git remote add origin [URL]</code></li>
+            <li>Envie: <code>git push -u origin main</code></li>
+          </ol>
+          <div class="tip">
+            <strong>Nota:</strong> Antes era comum usar "master", mas agora o padrão é "main". Se encontrar problemas, verifique qual o nome da branch padrão do seu repositório.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="folder">
+      <div class="folder-header">
+        <h2 class="folder-title"><i class="fas fa-history"></i> Versionamento com Git</h2>
+        <span class="folder-icon">▶</span>
+      </div>
+      <div class="folder-content">
+        <div class="content-inner">
+          <p>Fluxo básico para criar versões (commits):</p>
+          <ol>
+            <li>Verifique mudanças: <code>git status</code></li>
+            <li>Adicione arquivos modificados: <code>git add [arquivo]</code> ou <code>git add .</code> (todos)</li>
+            <li>Crie um commit: <code>git commit -m "Mensagem descritiva"</code></li>
+            <li>Verifique o histórico: <code>git log</code></li>
+          </ol>
+          <p><strong>Boas práticas:</strong></p>
+          <ul>
+            <li>Faça commits pequenos e frequentes</li>
+            <li>Use mensagens de commit claras e descritivas</li>
+            <li>Um commit deve representar uma mudança lógica única</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="folder">
+      <div class="folder-header">
+        <h2 class="folder-title"><i class="fas fa-cloud-upload-alt"></i> Enviar para o GitHub</h2>
+        <span class="folder-icon">▶</span>
+      </div>
+      <div class="folder-content">
+        <div class="content-inner">
+          <p>Após fazer commits locais, envie para o GitHub:</p>
+          <ol>
+            <li>Certifique-se de ter um remote: <code>git remote -v</code></li>
+            <li>Envie para a branch principal: <code>git push origin main</code></li>
+            <li>Se for a primeira vez: <code>git push -u origin main</code></li>
+          </ol>
+          <div class="tip">
+            <strong>Dica:</strong> O <code>-u</code> define o upstream, então da próxima vez basta usar <code>git push</code>.
+          </div>
+          <p>Para enviar uma nova branch: <code>git push -u origin [nome-da-branch]</code></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Desenvolvido por Evandro Azevedo | Tutorial de Git e GitHub
+  </footer>
+
+  <script>
+    // Adiciona funcionalidade de clique para abrir/fechar pastas
+    document.querySelectorAll('.folder-header').forEach(header => {
+      header.addEventListener('click', function() {
+        const folder = this.parentElement;
+        
+        // Se já está ativa, desativa
+        if (folder.classList.contains('active')) {
+          folder.classList.remove('active');
+        } else {
+          // Ativa a pasta clicada
+          folder.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
